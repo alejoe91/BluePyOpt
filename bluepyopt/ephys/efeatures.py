@@ -372,6 +372,7 @@ class extraFELFeature(EFeature, DictMixin):
     def calculate_feature(self, responses, raise_warnings=False, return_waveforms=False,
                           detect_threshold=None, verbose=False):
         """Calculate feature value"""
+
         peak_times = self._get_peak_times(responses, raise_warnings=raise_warnings)
 
         if len(peak_times) > 1 and self.skip_first_spike:
@@ -401,9 +402,10 @@ class extraFELFeature(EFeature, DictMixin):
             if verbose:
                 print('filter disabled')
             response_filter = response_interp
-
+        
         ewf = _get_waveforms(response_filter, peak_times, self.ms_cut)
         mean_wf = np.mean(ewf, axis=0)
+
         if self.upsample is not None:
             if verbose:
                 print('upsample')
@@ -414,7 +416,7 @@ class extraFELFeature(EFeature, DictMixin):
         else:
             mean_wf_up = mean_wf
             fs_up = self.fs
-
+        
         amplitudes = np.max(np.abs(mean_wf_up), axis=1)
         values = calculate_features(mean_wf_up, fs_up * 1000, feature_names=[self.extrafel_feature_name],
                                     channel_locations=self.channel_locations)
@@ -446,7 +448,7 @@ class extraFELFeature(EFeature, DictMixin):
     def calculate_score(self, responses, trace_check=False):
         """Calculate the score"""
         feature_value = self.calculate_feature(responses)
-
+        
         if len(feature_value) == 1:
             # scalar feature
             if not np.isfinite(feature_value):
@@ -466,14 +468,16 @@ class extraFELFeature(EFeature, DictMixin):
                 # scale by number of non nan idxs in the mean
                 # if the feature_value has less nan values, it is penalized
                 score *= len(non_nan_idxs_mean) / len(non_nan_idxs)
+                if np.isnan(score):
+                    score = self.max_score
             else:
                 score = self.max_score
-
+            
         if self.force_max_score:
             score = min(score, self.max_score)
 
         logger.debug('Calculated score for %s: %f', self.name, score)
-
+        
         return score
 
     def __str__(self):
@@ -575,7 +579,6 @@ def _get_waveforms(response, peak_times, snippet_len_ms):
     num_frames = len(times)
     snippet_len_total = int(snippet_len_before + snippet_len_after)
     waveforms = np.zeros((num_snippets, num_channels, snippet_len_total), dtype=traces.dtype)
-
     for i in range(num_snippets):
         snippet_chunk = np.zeros((num_channels, snippet_len_total), dtype=traces.dtype)
         if 0 <= reference_frames[i] < num_frames:
@@ -591,6 +594,5 @@ def _get_waveforms(response, peak_times, snippet_len_ms):
                 snippet_range[1] -= snippet_range[1] - num_frames
             snippet_chunk[:, snippet_buffer[0]:snippet_buffer[1]] = traces[:, snippet_range[0]:snippet_range[1]]
         waveforms[i] = snippet_chunk
-
     return waveforms
 

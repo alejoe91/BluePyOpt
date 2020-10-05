@@ -194,7 +194,7 @@ class CellEvaluator(bpopt.evaluators.Evaluator):
         responses = self.run_protocols(
             self.fitness_protocols.values(),
             param_dict)
-
+        
         return self.fitness_calculator.calculate_scores(responses)
 
     def evaluate_with_lists(self, param_list=None):

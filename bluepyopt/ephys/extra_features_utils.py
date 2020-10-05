@@ -87,7 +87,7 @@ def calculate_features(waveforms, sampling_frequency, feature_names=None,
         metrics['pos_peak_relative'] = relative_amplitude(
             waveforms=waveforms, sign='positive'
         )
-
+    
     return metrics
 
 
