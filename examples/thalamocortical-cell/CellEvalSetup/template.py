@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016, EPFL/Blue Brain Project
+Copyright (c) 2016-2020, EPFL/Blue Brain Project
 
  This file is part of BluePyOpt <https://github.com/BlueBrain/BluePyOpt>
 
@@ -82,7 +82,7 @@ def define_mechanisms(params_filename):
             object_pairs_hook=collections.OrderedDict)["mechanisms"]
 
     mechanisms_list = []
-    for sectionlist, channels in mech_definitions.iteritems():
+    for sectionlist, channels in mech_definitions.items():
 
         seclist_locs = multi_locations(sectionlist)
 
@@ -112,7 +112,7 @@ def define_parameters(params_filename):
     distributions["uniform"] = ephys.parameterscalers.NrnSegmentLinearScaler()
 
     distributions_definitions = definitions["distributions"]
-    for distribution, definition in distributions_definitions.iteritems():
+    for distribution, definition in distributions_definitions.items():
         distributions[distribution] = \
             ephys.parameterscalers.NrnSegmentSomaDistanceScaler(
                 distribution=definition["fun"])
@@ -122,7 +122,7 @@ def define_parameters(params_filename):
     if "__comment" in params_definitions:
         del params_definitions["__comment"]
 
-    for sectionlist, params in params_definitions.iteritems():
+    for sectionlist, params in params_definitions.items():
         if sectionlist == 'global':
             seclist_locs = None
             is_global = True

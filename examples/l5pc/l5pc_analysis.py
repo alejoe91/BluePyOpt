@@ -1,7 +1,7 @@
 """Run simple cell optimisation"""
 
 """
-Copyright (c) 2016, EPFL/Blue Brain Project
+Copyright (c) 2016-2020, EPFL/Blue Brain Project
 
  This file is part of BluePyOpt <https://github.com/BlueBrain/BluePyOpt>
 
@@ -188,7 +188,7 @@ def plot_objectives(objectives, fig=None, box=None):
     """Plot objectives of the cell model"""
 
     import collections
-    objectives = collections.OrderedDict(sorted(objectives.iteritems()))
+    objectives = collections.OrderedDict(sorted(objectives.items()))
     left_margin = box['width'] * 0.4
     right_margin = box['width'] * 0.05
     top_margin = box['height'] * 0.05

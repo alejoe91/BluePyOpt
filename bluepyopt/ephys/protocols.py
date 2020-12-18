@@ -1,7 +1,7 @@
 """Protocol classes"""
 
 """
-Copyright (c) 2016, EPFL/Blue Brain Project
+Copyright (c) 2016-2020, EPFL/Blue Brain Project
 
  This file is part of BluePyOpt <https://github.com/BlueBrain/BluePyOpt>
 
@@ -231,7 +231,7 @@ class SweepProtocol(Protocol):
                 if timeout < 0:
                     raise ValueError("timeout should be > 0")
 
-            with pebble.ProcessPool(max_tasks=1) as pool:
+            with pebble.ProcessPool(max_workers=1, max_tasks=1) as pool:
                 tasks = pool.schedule(self._run_func, kwargs={
                     'cell_model': cell_model,
                     'param_values': param_values,

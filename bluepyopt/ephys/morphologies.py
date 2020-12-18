@@ -2,6 +2,7 @@
 
 """
 Copyright (c) 2016-2020, EPFL/Blue Brain Project
+
  This file is part of BluePyOpt <https://github.com/BlueBrain/BluePyOpt>
  This library is free software; you can redistribute it and/or modify it under
  the terms of the GNU Lesser General Public License version 3.0 as published
