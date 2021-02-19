@@ -139,7 +139,6 @@ class NrnFileMorphology(Morphology, DictMixin):
             self.set_nseg(icell)
 
         if self.do_replace_axon:
-            print("ciao")
             self.replace_axon(sim=sim, icell=icell)
 
         if self.morph_modifiers is not None:
