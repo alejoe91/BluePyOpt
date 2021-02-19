@@ -672,6 +672,7 @@ class LFPyCellModel(Model):
         self.LFPyCell = LFPy.Cell(morphology=sim.neuron.h.allsec(), 
                                   dt=self.dt,
                                   v_init=self.v_init,
+                                  pt3d=True,
                                   delete_sections=False,
                                   nsegs_method=None)
 
