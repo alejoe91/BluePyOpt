@@ -172,13 +172,13 @@ class LFPySimulator(object):
     """Neuron simulator"""
 
     def __init__(self, LFPyCellModel, electrode=None, cvode_active=True,
-                 random123_globalindex=None, electrode_mapping=None):
+                 random123_globalindex=None):
         """Constructor"""
 
         self.LFPyCellModel = LFPyCellModel
         self.electrode = electrode
-        self.electrode_mapping = electrode_mapping
-        
+        self.lfpyelectrode = None
+
         if platform.system() == 'Windows':
             # hoc.so does not exist on NEURON Windows
             # although \\hoc.pyd can work here, it gives an error for
@@ -229,6 +229,7 @@ class LFPySimulator(object):
             cvode_active=None,
             random123_globalindex=None):
         """Run protocol"""
+        import LFPy
 
         self.LFPyCellModel.LFPyCell.tstart = 0.
         self.LFPyCellModel.LFPyCell.tstop = tstop
@@ -242,8 +243,9 @@ class LFPySimulator(object):
 
         # if self.electrode.mapping is not None:
         #     print("Using existing mapping")
+        self.lfpyelectrode = LFPy.RecExtElectrode(self.LFPyCellModel.LFPyCell, probe=self.electrode)
 
-        sim_params = {"electrode": self.electrode,
+        sim_params = {"probes": [self.lfpyelectrode],
                       "rec_vmem": False,
                       "rec_imem": False,
                       "rec_ipas": False,
@@ -255,7 +257,6 @@ class LFPySimulator(object):
                       "to_memory": True,
                       "to_file": False,
                       "file_name": None,
-                      "dotprodcoeffs": self.electrode_mapping
                       }
 
         try:
