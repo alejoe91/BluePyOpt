@@ -130,7 +130,6 @@ class LFPRecording(Recording):
 
         super(LFPRecording, self).__init__(name=name)
         
-        self.lfp = None
         self.cell = None
         self.tvector = None
         self.time = None

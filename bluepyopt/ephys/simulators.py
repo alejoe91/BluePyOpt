@@ -243,14 +243,17 @@ class LFPySimulator(object):
 
         # if self.electrode.mapping is not None:
         #     print("Using existing mapping")
-        self.lfpyelectrode = LFPy.RecExtElectrode(self.LFPyCellModel.LFPyCell, probe=self.electrode)
+        if self.electrode is not None:
+            self.lfpyelectrode = LFPy.RecExtElectrode(self.LFPyCellModel.LFPyCell, probe=self.electrode)
+            probes = [self.lfpyelectrode],
+        else:
+            probes = None
 
-        sim_params = {"probes": [self.lfpyelectrode],
+        sim_params = {"probes": probes,
                       "rec_vmem": False,
                       "rec_imem": False,
                       "rec_ipas": False,
                       "rec_icap": False,
-                      "rec_current_dipole_moment": False,
                       "rec_variables": [],
                       "variable_dt": self.cvode_active,
                       "atol": 0.001,
